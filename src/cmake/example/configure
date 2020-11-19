@@ -98,8 +98,9 @@ elif [[ "${CONFIGURE_UNAME}" == "Darwin" ]]; then
 
     CONFIGURE_RPATH=$(dirname $(dirname ${CONFIGURE_CXX}))/lib
 else
-    echo "Implement compiler detection for this platform"
-    exit 1
+    #echo "Implement compiler detection for this platform"
+    #exit 1
+    :
 fi
 
 #CONFIGURE_CMAKE_OPTION_CC="-DCMAKE_C_COMPILER=${CONFIGURE_CC}"

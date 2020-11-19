@@ -131,8 +131,10 @@ endif()
 
 # Add compiler options: linkage
 
-add_compile_options(-static -static-libgcc -static-libstdc++)
-add_link_options(-static -static-libgcc -static-libstdc++)
+if(${GDE_STATIC})
+    add_compile_options(-static -static-libgcc -static-libstdc++)
+    add_link_options(-static -static-libgcc -static-libstdc++)
+endif()
 
 # Add compiler options: warnings
 
