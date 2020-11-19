@@ -43,32 +43,32 @@ test:
 install:
 	@echo "Install"
 	@echo Installing to ${CONFIGURE_PREFIX}/lib/cmake/build
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/module
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/module
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/module/gde.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/module/gde.cmake
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/template
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/template
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/template/gde-config.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/template/gde-config.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/template/gde.pc ${CONFIGURE_PREFIX}/lib/cmake/build/template/gde.pc
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/default.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/default.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/msvc.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/msvc.cmake
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/darwin.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/darwin.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/freebsd.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/freebsd.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/linux.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/linux.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/openbsd.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/openbsd.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/solaris.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/solaris.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/windows.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/windows.cmake
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/darwin.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/darwin.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/freebsd.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/freebsd.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/linux.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/linux.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/openbsd.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/openbsd.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/solaris.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/solaris.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc/windows.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc/windows.cmake
-	-@mkdir ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/msvc
+	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/msvc
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/msvc/windows.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/msvc/windows.cmake
 
 clean:

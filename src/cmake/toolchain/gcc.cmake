@@ -5,6 +5,9 @@ include_guard(GLOBAL)
 
 include(CMakeInitializeConfigs)
 
+set(CMAKE_C_COMPILER ${GDE_TOOLCHAIN_COMPILER_CC_PATH} CACHE STRING "Default" FORCE)
+set(CMAKE_CXX_COMPILER ${GDE_TOOLCHAIN_COMPILER_CXX_PATH} CACHE STRING "Default" FORCE)
+
 message(STATUS "GDE Build Toolchain: GCC: CMAKE_HOST_SYSTEM_NAME = ${CMAKE_HOST_SYSTEM_NAME}")
 message(STATUS "GDE Build Toolchain: GCC: CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 
@@ -54,7 +57,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO      "" CACHE STRING "RelWithDebInfo" FORCE)
 # set(CMAKE_C_FLAGS_RELEASE           "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O2 -g0" CACHE STRING "Release"        FORCE)
 # set(CMAKE_C_FLAGS_MINSIZEREL        "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O2 -g0" CACHE STRING "MinSizeRel"     FORCE)
 # set(CMAKE_C_FLAGS_RELWITHDEBINFO    "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O2 -g0" CACHE STRING "RelWithDebInfo" FORCE)
-# 
+#
 # set(CMAKE_CXX_FLAGS_DEBUG           "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O0 -g2" CACHE STRING "Debug"          FORCE)
 # set(CMAKE_CXX_FLAGS_RELEASE         "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O2 -g0" CACHE STRING "Release"        FORCE)
 # set(CMAKE_CXX_FLAGS_MINSIZEREL      "-m64 -fno-strict-aliasing -fno-omit-frame-pointer -O2 -g0" CACHE STRING "MinSizeRel"     FORCE)
@@ -125,6 +128,11 @@ elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
 else()
     # TODO
 endif()
+
+# Add compiler options: linkage
+
+add_compile_options(-static -static-libgcc -static-libstdc++)
+add_link_options(-static -static-libgcc -static-libstdc++)
 
 # Add compiler options: warnings
 
