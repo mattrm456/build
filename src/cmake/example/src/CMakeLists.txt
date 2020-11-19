@@ -29,12 +29,10 @@ include(gde)
 
 gde_project()
 
-add_subdirectory(library/example)
-add_subdirectory(executable/example-console)
+add_subdirectory(example)
+add_subdirectory(example-console)
 
 gde_project_end()
 
 include(CPack)
-
-
 

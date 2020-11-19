@@ -1,8 +1,7 @@
 #include <example-console/version.h>
 
 #include <example/two/a.h>
-#include <example/two/a.h>
-
+#include <example/two/b.h>
 #include <example/one/a.h>
 #include <example/one/b.h>
 

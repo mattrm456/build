@@ -3,6 +3,11 @@
 # Copyright (c) 2002-2019
 ###############################################################################
 
+message(STATUS "GDE Build version 1.0.0")
+set(GDE_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
+message(STATUS "GDE Build: GDE_MODULE_DIR = ${GDE_MODULE_DIR}")
+
 # Load into the specified 'output' the directory of the file of the specified
 # 'path', if any.
 function (gde_dirname output path)
@@ -42,19 +47,10 @@ endfunction()
 # Add the standard system preprocessor definitions to the specified 'library'.
 function (gde_add_library_system_compile_definitions library)
     if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
-        target_compile_definitions(${library} PUBLIC -DGDE_EXPORT= PRIVATE -D_REENTRANT -D_THREAD_SAFE -D_FORTIFY_SOURCE=0)
-        target_compile_definitions(${library} PRIVATE -D_BSD_SOURCE)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
-        target_compile_definitions(${library} PUBLIC -DGDE_EXPORT= PRIVATE -D_REENTRANT -D_THREAD_SAFE -D_FORTIFY_SOURCE=0)
-        target_compile_definitions(${library} PRIVATE -D_BSD_SOURCE)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
-        target_compile_definitions(${library} PUBLIC -DGDE_EXPORT= PRIVATE -D_REENTRANT -D_THREAD_SAFE -D_FORTIFY_SOURCE=0)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
-        target_compile_definitions(${library} PUBLIC -DGDE_EXPORT= PRIVATE -D_REENTRANT -D_THREAD_SAFE -D_FORTIFY_SOURCE=0)
-        target_compile_definitions(${library} PRIVATE -D_GNU_SOURCE)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
-        target_compile_definitions(${library} PUBLIC -DGDE_EXPORT= PRIVATE -D_REENTRANT -D_THREAD_SAFE -D_FORTIFY_SOURCE=0)
-        target_compile_definitions(${library} PRIVATE -D_GNU_SOURCE)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
         target_compile_definitions(${library} PUBLIC GDE_EXPORT= PRIVATE WIN32 _WIN32 _MBCS _CONSOLE _CRT_SECURE_NO_DEPRECATE _CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS _ITERATOR_DEBUG_LEVEL=0)
 	# MRM: if project type is console rather than GUI:
@@ -66,29 +62,20 @@ endfunction()
 function (gde_add_library_system_compile_options library)
 
     if(${GDE_WARN})
-        if (UNIX)
-            set(warning_option "-Wall -Wextra")
-        else()
+        if (MSVC)
             set(warning_option "/W4")
         endif()
     else()
-        if (UNIX)
-            set(warning_option "-w")
-        else()
+        if (MSVC)
             set(warning_option "/W0")
         endif()
     endif()
 
     if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
-	target_compile_options(${library} PUBLIC -pipe ${warning_option} -fexceptions -fno-strict-aliasing -fno-omit-frame-pointer)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
-	target_compile_options(${library} PUBLIC -pipe ${warning_option} -fexceptions -fno-strict-aliasing -fno-omit-frame-pointer)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
-	target_compile_options(${library} PUBLIC -pipe ${warning_option} -fexceptions -fno-strict-aliasing -fno-omit-frame-pointer)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
-	target_compile_options(${library} PUBLIC -pipe ${warning_option} -fexceptions -fno-strict-aliasing -fno-omit-frame-pointer)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
-	target_compile_options(${library} PUBLIC -pipe ${warning_option} -fexceptions -fno-strict-aliasing -fno-omit-frame-pointer)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
 	target_compile_options(${library} PRIVATE /nologo /bigobj /ERRORREPORT:NONE ${warning_option})
 	# MRM: if project type is console
@@ -684,19 +671,6 @@ function (gde_project)
         #MESSAGE( STATUS "ADJUSTED_CMAKE_CXX_FLAGS: " ${ADJUSTED_CMAKE_CXX_FLAGS} )
     endif()
 
-    # Set the build type-specific C/C++ options.
-
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        add_definitions("-D_DEBUG")
-    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-        add_definitions("-DNDEBUG")
-    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
-        add_definitions("-DNDEBUG")
-    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
-        add_definitions("-DNDEBUG")
-    else()
-    endif()
-
     # Set the compile type-specific options.
 
     if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
@@ -744,7 +718,7 @@ function (gde_project_end)
     )
 
     configure_file(
-	${CMAKE_SOURCE_DIR}/tools/modules/cmake/gde-config.cmake
+        ${GDE_MODULE_DIR}/../template/gde-config.cmake
         "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}-config.cmake"
         @ONLY
     )
