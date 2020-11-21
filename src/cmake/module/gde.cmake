@@ -52,7 +52,6 @@ function (gde_add_library_system_compile_definitions library)
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-        target_compile_definitions(${library} PUBLIC GDE_EXPORT= PRIVATE WIN32 _WIN32 _MBCS _CONSOLE _CRT_SECURE_NO_DEPRECATE _CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS _ITERATOR_DEBUG_LEVEL=0)
 	# MRM: if project type is console rather than GUI:
 	# /D_CONSOLE)
     endif()
@@ -61,23 +60,12 @@ endfunction()
 # Add the specified system compiler options to the specified 'library'.
 function (gde_add_library_system_compile_options library)
 
-    if(${GDE_WARN})
-        if (MSVC)
-            set(warning_option "/W4")
-        endif()
-    else()
-        if (MSVC)
-            set(warning_option "/W0")
-        endif()
-    endif()
-
     if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
     elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-	target_compile_options(${library} PRIVATE /nologo /bigobj /ERRORREPORT:NONE ${warning_option})
 	# MRM: if project type is console
 	# /SUBSYSTEM:CONSOLE
 	# MRM: else
@@ -539,137 +527,6 @@ function (gde_project)
     # Include the root of the repository when packaging.
 
     set(CPACK_SOURCE_INSTALLED_DIRECTORIES "${CMAKE_SOURCE_DIR}/..;/" PARENT_SCOPE)
-
-    # Strip the default warning level set for MSVC.
-
-    if(MSVC)
-        #MESSAGE( STATUS "CMAKE_C_FLAGS: " ${CMAKE_C_FLAGS} )
-        #MESSAGE( STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS} )
-
-        # Replace all C flags that specify /Z* with /Z7
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_C_FLAGS
-               "${CMAKE_C_FLAGS}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_C_FLAGS_DEBUG
-               "${CMAKE_C_FLAGS_DEBUG}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_C_FLAGS_RELEASE 
-               "${CMAKE_C_FLAGS_RELEASE}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_C_FLAGS_RELWITHDEBINFO
-               "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_C_FLAGS_MINSIZEREL
-               "${CMAKE_C_FLAGS_MINSIZEREL}")
-
-        # Replace all C++ flags that specify /Z* with /Z7
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_CXX_FLAGS
-               "${CMAKE_CXX_FLAGS}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_CXX_FLAGS_DEBUG
-               "${CMAKE_CXX_FLAGS_DEBUG}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_CXX_FLAGS_RELEASE 
-               "${CMAKE_CXX_FLAGS_RELEASE}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_CXX_FLAGS_RELWITHDEBINFO
-               "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
-
-        string(REGEX REPLACE "/Z[iI7]" "" 
-               CMAKE_CXX_FLAGS_MINSIZEREL
-               "${CMAKE_CXX_FLAGS_MINSIZEREL}")
-           
-        set(CompilerFlags
-            CMAKE_C_FLAGS
-            CMAKE_C_FLAGS_DEBUG
-            CMAKE_C_FLAGS_RELEASE
-            CMAKE_C_FLAGS_RELWITHDEBINFO
-            CMAKE_C_FLAGS_MINSIZEREL
-            CMAKE_CXX_FLAGS
-            CMAKE_CXX_FLAGS_DEBUG
-            CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_CXX_FLAGS_RELWITHDEBINFO
-            CMAKE_CXX_FLAGS_MINSIZEREL
-        )
-
-        foreach(CompilerFlag ${CompilerFlags})
-            string(REPLACE "/MT"  "" ${CompilerFlag} "${${CompilerFlag}}")
-            string(REPLACE "/MTd" "" ${CompilerFlag} "${${CompilerFlag}}")
-            string(REPLACE "/MD"  "" ${CompilerFlag} "${${CompilerFlag}}")
-            string(REPLACE "/MDd" "" ${CompilerFlag} "${${CompilerFlag}}")
-        endforeach()
-
-        set(CMAKE_C_FLAGS
-            "${CMAKE_C_FLAGS}"
-            PARENT_SCOPE)
-           
-        set(CMAKE_C_FLAGS_DEBUG 
-            "${CMAKE_C_FLAGS_DEBUG} /Z7 /MT"
-            PARENT_SCOPE)
-           
-        set(CMAKE_C_FLAGS_RELEASE 
-            "${CMAKE_C_FLAGS_RELEASE} /Z7 /MT"
-            PARENT_SCOPE)
-           
-        set(CMAKE_C_FLAGS_RELWITHDEBINFO 
-            "${CMAKE_C_FLAGS_RELWITHDEBINFO} /Z7 /MT"
-            PARENT_SCOPE)
-
-        set(CMAKE_C_FLAGS_MINSIZEREL 
-            "${CMAKE_C_FLAGS_MINSIZEREL} /Z7 /MT"
-            PARENT_SCOPE)
-          
-        set(CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS}"
-            PARENT_SCOPE)
-
-        set(CMAKE_CXX_FLAGS_DEBUG 
-            "${CMAKE_CXX_FLAGS_DEBUG} /Z7 /MT"
-            PARENT_SCOPE)
-
-        set(CMAKE_CXX_FLAGS_RELEASE 
-            "${CMAKE_CXX_FLAGS_RELEASE} /Z7 /MT"
-            PARENT_SCOPE)
-
-        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-            "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7 /MT"
-            PARENT_SCOPE)
-
-        set(CMAKE_CXX_FLAGS_MINSIZEREL 
-            "${CMAKE_CXX_FLAGS_MINSIZEREL} /Z7 /MT"
-            PARENT_SCOPE)
-
-        string(REGEX REPLACE "/W3" "" CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
-        string(REGEX REPLACE "-W3" "" CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
-        string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-        string(REGEX REPLACE "-W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-
-        #MESSAGE( STATUS "CMAKE_C_FLAGS: " ${CMAKE_C_FLAGS} )
-        #MESSAGE( STATUS "ADJUSTED_CMAKE_C_FLAGS: " ${ADJUSTED_CMAKE_C_FLAGS} )
-
-        #MESSAGE( STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS} )
-        #MESSAGE( STATUS "ADJUSTED_CMAKE_CXX_FLAGS: " ${ADJUSTED_CMAKE_CXX_FLAGS} )
-
-        set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} PARENT_SCOPE)
-        set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} PARENT_SCOPE)
-
-        #MESSAGE( STATUS "CMAKE_C_FLAGS: " ${CMAKE_C_FLAGS} )
-        #MESSAGE( STATUS "ADJUSTED_CMAKE_C_FLAGS: " ${ADJUSTED_CMAKE_C_FLAGS} )
-
-        #MESSAGE( STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS} )
-        #MESSAGE( STATUS "ADJUSTED_CMAKE_CXX_FLAGS: " ${ADJUSTED_CMAKE_CXX_FLAGS} )
-    endif()
 
     # Set the compile type-specific options.
 
