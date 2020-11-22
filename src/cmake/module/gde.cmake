@@ -44,40 +44,6 @@ function (gde_fullpath output path)
     set(${output} ${result} PARENT_SCOPE)
 endfunction()
 
-# Add the standard system preprocessor definitions to the specified 'library'.
-function (gde_add_library_system_compile_definitions library)
-    if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-	# MRM: if project type is console rather than GUI:
-	# /D_CONSOLE)
-    endif()
-endfunction()
-
-# Add the specified system compiler options to the specified 'library'.
-function (gde_add_library_system_compile_options library)
-
-    if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
-    elseif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-	# MRM: if project type is console
-	# /SUBSYSTEM:CONSOLE
-	# MRM: else
-	# /SUBSYSTEM:WINDOWS
-	#
-	# MRM: ff warnings should be enabled
-	# /W3
-	# MRM: else
-	# /W0
-    endif()
-endfunction()
-
 # Add the specified 'library_group' aggregating the libraries specified
 # subsequently as 'ARGN'.
 function (gde_add_library_group library_group)
@@ -106,9 +72,6 @@ function (gde_add_library_group library_group)
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
     )
-
-    gde_add_library_system_compile_definitions(${library_group})
-    gde_add_library_system_compile_options(${library_group})
 
     install(
         TARGETS
@@ -181,98 +144,6 @@ function (gde_add_library library)
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
     )
 
-    target_include_directories(
-        ${library}
-        SYSTEM PUBLIC
-        /opt/local/include)
-
-    #target_include_directories(
-    #    ${library}
-    #    SYSTEM PRIVATE
-    #    /opt/include)
-
-    #target_include_directories(
-    #    ${library}
-    #    SYSTEM PRIVATE
-    #    /usr/local/include)
-
-    #target_include_directories(
-    #    ${library}
-    #    SYSTEM PRIVATE
-    #    /usr/include)
-
-    #target_include_directories(
-    #    ${library}
-    #    SYSTEM PRIVATE
-    #    /include)
-
-    target_include_directories(
-        ${object_library}
-        SYSTEM PUBLIC
-        /opt/local/include)
-
-    #target_include_directories(
-    #    ${object_library}
-    #    SYSTEM PRIVATE
-    #    /opt/include)
-
-    #target_include_directories(
-    #    ${object_library}
-    #    SYSTEM PRIVATE
-    #    /usr/local/include)
-
-    #target_include_directories(
-    #    ${object_library}
-    #    SYSTEM PRIVATE
-    #    /usr/include)
-
-    #target_include_directories(
-    #    ${object_library}
-    #    SYSTEM PRIVATE
-    #    /include)
-
-    target_link_directories(
-        ${library}
-        PUBLIC
-        /opt/local/lib)
-    #target_link_directories(
-    #    ${library}
-    #    PUBLIC
-    #    /opt/lib)
-    #target_link_directories(
-    #    ${library}
-    #    PUBLIC
-    #    /usr/local/lib)
-    #target_link_directories(
-    #    ${library}
-    #    PUBLIC
-    #    /usr/lib)
-    #target_link_directories(
-    #    ${library}
-    #    PUBLIC
-    #    /lib)
-
-    target_link_directories(
-        ${object_library}
-        PUBLIC
-        /opt/local/lib)
-    #target_link_directories(
-    #    ${object_library}
-    #    PUBLIC
-    #    /opt/lib)
-    #target_link_directories(
-    #    ${object_library}
-    #    PUBLIC
-    #    /usr/local/lib)
-    #target_link_directories(
-    #    ${object_library}
-    #    PUBLIC
-    #    /usr/lib)
-    #target_link_directories(
-    #    ${object_library}
-    #    PUBLIC
-    #    /lib)
-
     if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
 
     elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")
@@ -301,23 +172,35 @@ function (gde_add_library library)
 
     elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 
+        target_include_directories(
+            ${library}
+            SYSTEM PUBLIC
+            /opt/local/include)
+
+        target_include_directories(
+            ${object_library}
+            SYSTEM PUBLIC
+            /opt/local/include)
+
+        target_link_directories(
+            ${library}
+            PUBLIC
+            /opt/local/lib)
+
+        target_link_directories(
+            ${object_library}
+            PUBLIC
+            /opt/local/lib)
+
     elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "SunOS")
 
     endif()
-
-    gde_add_library_system_compile_definitions(${object_library})
-    gde_add_library_system_compile_options(${object_library})
-
-    gde_add_library_system_compile_definitions(${library})
-    gde_add_library_system_compile_options(${library})
 
     foreach(source ${ARGN})
         gde_dirname(source_dirname ${source})
         gde_basename(source_basename ${source})
         gde_barename(source_barename ${source})
         gde_extension(source_extension ${source})
-
-        set(source_testname "${library}.${source_barename}.t")
 
         if("${source_dirname}" STREQUAL "")
             set(source_testpath "${source_barename}.t${source_extension}")
@@ -341,58 +224,65 @@ function (gde_add_library library)
         set(schema_fullpath
             "${source_fullpath_dirname}/${source_barename}.uidl")
 
-        # message("--")
-        # message("source='${source}'")
-        # message("header='${header}'")
-        # message("schema='${schema}'")
-        # message("source_barename='${source_barename}'")
-        # message("source_basename='${source_basename}'")
-        # message("source_extension='${source_extension}'")
-        # message("source_testname='${source_testname}'")
-        # message("source_testpath='${source_testpath}'")
-        # message("source_fullpath='${source_fullpath}'")
-        # message("source_projpath='${source_projpath}'")
-        # message("source_installdir='${source_installdir}'")
-        # message("header_fullpath='${header_fullpath}'")
-        # message("schema_fullpath='${schema_fullpath}'")
-        # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
+        STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
+        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
+
+        set(component_test_build_target "${component_impl_build_target}.t")
+
+        message("--")
+        message("source='${source}'")
+        message("header='${header}'")
+        message("schema='${schema}'")
+        message("source_barename='${source_barename}'")
+        message("source_basename='${source_basename}'")
+        message("source_extension='${source_extension}'")
+        message("source_dirname='${source_dirname}'")
+        message("source_testpath='${source_testpath}'")
+        message("source_fullpath='${source_fullpath}'")
+        message("source_projpath='${source_projpath}'")
+        message("source_installdir='${source_installdir}'")
+        message("header_fullpath='${header_fullpath}'")
+        message("schema_fullpath='${schema_fullpath}'")
+        message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
+        message("component_impl_build_target='${component_impl_build_target}'")
+        message("component_test_build_target='${component_test_build_target}'")
 
         if(${GDE_TEST})
             add_executable(
-                ${source_testname}
+                ${component_test_build_target}
                 EXCLUDE_FROM_ALL
                 ${source_testpath}
             )
 
             add_dependencies(
-                ${source_testname}
+                ${component_test_build_target}
                 ${library}
             )
 
             add_dependencies(
                 build_test
-                ${source_testname}
+                ${component_test_build_target}
             )
 
             target_include_directories(
-                ${source_testname}
+                ${component_test_build_target}
                 PUBLIC
                 $<INSTALL_INTERFACE:include>
                 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
             )
 
             target_link_libraries(
-                ${source_testname}
+                ${component_test_build_target}
                 PUBLIC
                 ${library}
             )
 
             add_test(
-                NAME ${source_testname}
-                COMMAND ${source_testname}
+                NAME ${component_test_build_target}
+                COMMAND ${component_test_build_target}
             )
 
-            set_tests_properties(${source_testname} PROPERTIES TIMEOUT 60)
+            set_tests_properties(${component_test_build_target} PROPERTIES TIMEOUT 60)
         endif()
 
         if (EXISTS ${header_fullpath})
@@ -528,29 +418,6 @@ function (gde_project)
 
     set(CPACK_SOURCE_INSTALLED_DIRECTORIES "${CMAKE_SOURCE_DIR}/..;/" PARENT_SCOPE)
 
-    # Set the compile type-specific options.
-
-    if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
-    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
-    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "SunPro")
-    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "XL")
-    endif()
-
-    # Set the compile type-specific options.
-
-    if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "AIX")
-    elseif ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
-    elseif ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "FreeBSD")
-    elseif ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "OpenBSD")
-    elseif ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Linux")
-    elseif ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "SunOS")
-    elseif (WIN32)
-    elseif (MSYS)
-    elseif (MINGW)
-    endif()
-
 endfunction()
 
 
@@ -636,7 +503,7 @@ function (gde_project_end)
     endif()
 
     set(CPACK_SOURCE_IGNORE_FILES
-        ".git" ".gitignore"
+        ".git" ".gitignore .vscode "
         "bin" "build" "cmake" "include" "lib" "obj" "pkg" "tmp"
         PARENT_SCOPE)
 
