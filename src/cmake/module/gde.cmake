@@ -389,13 +389,22 @@ function (gde_project)
             cloud generate --include "${PROJECT_SOURCE_DIR}" --include "${CMAKE_INSTALL_PREFIX}/include" ${PROJECT_SOURCE_DIR}
     )
 
-    add_custom_target(
-        build_test
-    )
+    if(${GDE_TEST})
+        add_custom_target(
+            build_test
+        )
 
-    add_custom_target(
-        check build_test ${CMAKE_CTEST_COMMAND}
-    )
+    #add_dependencies(
+    #        test
+    #        build_test
+    #    )
+
+    #    add_dependencies(
+    #        build_test
+    #        all
+    #    )
+
+    endif()
 
     # Maintain a file structure like:
     #
