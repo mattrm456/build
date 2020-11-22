@@ -5,8 +5,67 @@
 
 message(STATUS "GDE Build version 1.0.0")
 set(GDE_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}")
-
 message(STATUS "GDE Build: GDE_MODULE_DIR = ${GDE_MODULE_DIR}")
+
+# Getting the real path is only available in CMake >= 3.19
+# file(REAL_PATH ${PROJECT_SOURCE_DIR}/.. GDE_PROJECT_ROOT_DIR)
+set(GDE_PROJECT_ROOT_DIR "${PROJECT_SOURCE_DIR}/..")
+message(STATUS "GDE Build: GDE_PROJECT_ROOT_DIR = ${GDE_PROJECT_ROOT_DIR}")
+
+# MRM: Change to be a subdirectory from the project root dir
+set(GDE_PROJECT_GENERATOR_VSCODE_DIR "${PROJECT_SOURCE_DIR}/.vscode")
+
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/tasks.json")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_LAUNCH "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/launch.json")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_SETTINGS "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/settings.json")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_C_CPP_PROPERTIES "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/c_cpp_properties.json")
+
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH "")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_SETTINGS "")
+set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES "")
+
+message(STATUS "GDE Build: GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS = ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS}")
+
+file(MAKE_DIRECTORY ${GDE_PROJECT_GENERATOR_VSCODE_DIR})
+
+
+if("${GDE_TOOLCHAIN_COMPILER_CXX_NAME}" STREQUAL "cl")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$msCompile")
+else()
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$gcc")
+endif()
+
+string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
+{\n\
+  \"version\": \"2.0.0\",\n\
+  \"tasks\": [\n\
+    {\n\
+      \"type\": \"shell\",\n\
+      \"label\": \"all\",\n\
+      \"command\": \"${CMAKE_COMMAND}\",\n\
+      \"args\": [\n\
+          \"--build\",\n\
+          \"${CMAKE_BINARY_DIR}\",\n\
+          \"--parallel\",\n\
+          \"8\",\n\
+          \"--target\"\n\
+      ],\n\
+      \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
+      \"group\": {\n\
+        \"kind\": \"build\",\n\
+        \"isDefault\": true\n\
+      }\n\
+    }\n\
+  ]\n\
+}\n\
+")
+
+file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS})
+
+
+
+
 
 # Load into the specified 'output' the directory of the file of the specified
 # 'path', if any.

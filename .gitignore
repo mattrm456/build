@@ -3,6 +3,7 @@
 *.swo
 *.o
 *.core
+.vscode
 bin
 include
 share
@@ -11,6 +12,3 @@ etc
 obj
 tmp
 makefile
-src/tools/scripts/xmake
-src/tools/scripts/xmake.exe
-src/tools/scripts/xmake.pdb
