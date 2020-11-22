@@ -30,13 +30,16 @@ message(STATUS "GDE Build: GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS = ${GDE_
 file(MAKE_DIRECTORY ${GDE_PROJECT_GENERATOR_VSCODE_DIR})
 
 
+
+
 if("${GDE_TOOLCHAIN_COMPILER_CXX_NAME}" STREQUAL "cl")
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$msCompile")
 else()
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$gcc")
 endif()
 
-string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
+macro (gde_project_generator_vscode_tasks_add_prolog)
+    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
 {\n\
   \"version\": \"2.0.0\",\n\
   \"tasks\": [\n\
@@ -56,10 +59,66 @@ string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
         \"kind\": \"build\",\n\
         \"isDefault\": true\n\
       }\n\
-    }\n\
+    }")
+endmacro()
+
+macro (gde_project_generator_vscode_tasks_add_target target)
+    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ",\n\
+    {\n\
+      \"type\": \"shell\",\n\
+      \"label\": \"${target}\",\n\
+      \"command\": \"${CMAKE_COMMAND}\",\n\
+      \"args\": [\n\
+          \"--build\",\n\
+          \"${CMAKE_BINARY_DIR}\",\n\
+          \"--parallel\",\n\
+          \"8\",\n\
+          \"--target\",\n\
+          \"${target}\"\n\
+      ],\n\
+      \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
+      \"group\": {\n\
+        \"kind\": \"build\",\n\
+        \"isDefault\": true\n\
+      }\n\
+    }")
+endmacro()
+
+macro (gde_project_generator_vscode_tasks_add_epilog)
+    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\n\
   ]\n\
-}\n\
-")
+}")
+endmacro()
+
+# string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
+# {\n\
+#   \"version\": \"2.0.0\",\n\
+#   \"tasks\": [\n\
+#     {\n\
+#       \"type\": \"shell\",\n\
+#       \"label\": \"all\",\n\
+#       \"command\": \"${CMAKE_COMMAND}\",\n\
+#       \"args\": [\n\
+#           \"--build\",\n\
+#           \"${CMAKE_BINARY_DIR}\",\n\
+#           \"--parallel\",\n\
+#           \"8\",\n\
+#           \"--target\"\n\
+#       ],\n\
+#       \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
+#       \"group\": {\n\
+#         \"kind\": \"build\",\n\
+#         \"isDefault\": true\n\
+#       }\n\
+#     }\n\
+#   ]\n\
+# }\n\
+# ")
+
+gde_project_generator_vscode_tasks_add_prolog()
+gde_project_generator_vscode_tasks_add_target("foo")
+gde_project_generator_vscode_tasks_add_target("bar")
+gde_project_generator_vscode_tasks_add_epilog()
 
 file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS})
 
