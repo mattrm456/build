@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "example-console",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "C:\\Users\\Administrator\\GDE\\build\\src\\cmake\\example\\tmp\\debug\\bin\\example-console.exe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false
+      }
+    ]
+  }

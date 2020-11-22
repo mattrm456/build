@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "all",
+        "command": "cmake",
+        "args": [
+            "--build",
+            "C:\\Users\\Administrator\\GDE\\build\\src\\cmake\\example\\tmp\\debug\\obj",
+            "--parallel",
+            "8",
+            "--target"
+        ],
+        "problemMatcher": ["$msCompile"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
