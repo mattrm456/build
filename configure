@@ -54,6 +54,7 @@ install:
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/gcc.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/gcc.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/msvc.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/msvc.cmake
+	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/msvc.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/test.cmake
 	-@mkdir -p ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/darwin.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/darwin.cmake
 	@cp ${CONFIGURE_REPOSITORY}/src/cmake/toolchain/clang/freebsd.cmake ${CONFIGURE_PREFIX}/lib/cmake/build/toolchain/clang/freebsd.cmake

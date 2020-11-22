@@ -85,19 +85,36 @@ endif()
 
 # Add compiler options: general
 
-add_compile_options(/nologo /bigobj /ERRORREPORT:NONE /SUBSYSTEM:CONSOLE /Z7)
-add_linker_options(/MACHINE:X64)
+add_compile_options(/nologo /bigobj /ERRORREPORT:NONE /MT /Z7 /GF /FD /EHa)
+add_link_options(/NOLOGO /MACHINE:X64 /SUBSYSTEM:CONSOLE /INCREMENTAL:NO)
+
+add_link_options(/DEFAULTLIB:kernel32.lib)
+add_link_options(/DEFAULTLIB:user32.lib)
+add_link_options(/DEFAULTLIB:gdi32.lib)
+add_link_options(/DEFAULTLIB:winspool.lib)
+add_link_options(/DEFAULTLIB:comdlg32.lib)
+add_link_options(/DEFAULTLIB:advapi32.lib)
+add_link_options(/DEFAULTLIB:shell32.lib)
+add_link_options(/DEFAULTLIB:ole32.lib)
+add_link_options(/DEFAULTLIB:oleaut32.lib)
+add_link_options(/DEFAULTLIB:uuid.lib)
+add_link_options(/DEFAULTLIB:odbc32.lib)
+add_link_options(/DEFAULTLIB:odbccp32.lib)
 
 # Add compiler options: build type
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    add_compile_options(-O0 -g2)
+    add_compile_options(/Od /RTC1)
+    add_link_options(/DEBUG /OPT:NOREF)
 elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    add_compile_options(-O0 -g2)
+    add_compile_options(/Ox /Ob2 /GL /GS-)
+    add_link_options(/LTCG /OPT:REF)
 elseif("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
-    add_compile_options(-O0 -g2)
+    add_compile_options(/Ox /Ob2 /GL /GS-)
+    add_link_options(/LTCG /OPT:REF)
 elseif("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
-    add_compile_options(-O0 -g2)
+    add_compile_options(/Ox /Ob2 /GL /GS-)
+    add_link_options(/LTCG /OPT:REF)
 else()
     # TODO
 endif()
@@ -112,11 +129,11 @@ endif()
 
 # Add compiler options: linkage
 
-if(${GDE_STATIC})
-    add_compile_options(/MT)
-else()
-    add_compile_options(/MD)
-endif()
+# if(${GDE_STATIC})
+#     add_compile_options(/MT)
+# else()
+#     add_compile_options(/MD)
+# endif()
 
 # Add compiler options: warnings
 

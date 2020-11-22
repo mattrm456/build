@@ -113,31 +113,32 @@ install:
 	@echo Installing to $CONFIGURE_PREFIX\lib\cmake\build
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\module
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\module\gde.cmake $CONFIGURE_PREFIX\lib\cmake\build\module\gde.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\module\gde.cmake $CONFIGURE_PREFIX\lib\cmake\build\module\gde.cmake
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\template
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\template\gde-config.cmake $CONFIGURE_PREFIX\lib\cmake\build\template\gde-config.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\template\gde.pc $CONFIGURE_PREFIX\lib\cmake\build\template\gde.pc
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\template\gde-config.cmake $CONFIGURE_PREFIX\lib\cmake\build\template\gde-config.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\template\gde.pc $CONFIGURE_PREFIX\lib\cmake\build\template\gde.pc
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\toolchain
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\default.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\default.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\msvc.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\msvc.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\default.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\default.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\msvc.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\msvc.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\test.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\test.cmake
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\darwin.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\darwin.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\freebsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\freebsd.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\linux.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\linux.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\openbsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\openbsd.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\solaris.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\solaris.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\windows.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\darwin.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\darwin.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\freebsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\freebsd.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\linux.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\linux.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\openbsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\openbsd.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\solaris.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\solaris.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\clang\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\clang\windows.cmake
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\darwin.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\darwin.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\freebsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\freebsd.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\linux.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\linux.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\openbsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\openbsd.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\solaris.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\solaris.cmake
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\windows.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\darwin.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\darwin.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\freebsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\freebsd.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\linux.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\linux.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\openbsd.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\openbsd.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\solaris.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\solaris.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\gcc\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\gcc\windows.cmake
 	-@mkdir $CONFIGURE_PREFIX\lib\cmake\build\toolchain\msvc
-    @copy /A /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\msvc\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\msvc\windows.cmake
+    @copy /Y /V $CONFIGURE_REPOSITORY\src\cmake\toolchain\msvc\windows.cmake $CONFIGURE_PREFIX\lib\cmake\build\toolchain\msvc\windows.cmake
 
 clean:
 	@echo Clean
