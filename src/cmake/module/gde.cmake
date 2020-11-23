@@ -41,6 +41,22 @@ else()
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE "cppdbg")
 endif()
 
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_NAME "Linux")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_INTELLISENSE_MODE "clang-x64")
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_NAME "macOS")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_INTELLISENSE_MODE "clang-x64")
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_NAME "Win32")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_INTELLISENSE_MODE "msvc-x64")
+else()
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_NAME "Other")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_INTELLISENSE_MODE "")
+endif()
+
+
 function (gde_project_generator_vscode_tasks_add_prolog)
     get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
     string(APPEND tasks_text "\
@@ -159,6 +175,64 @@ function (gde_project_generator_vscode_launch_write)
     file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_LAUNCH} ${launch_text})
 endfunction()
 
+function (gde_project_generator_vscode_c_cpp_properties_write)
+    set(c_cpp_properties_text "")
+    if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+        string(APPEND c_cpp_properties_text "\
+{\n\
+  \"version\": 4,\n\
+  \"configurations\": [\n\
+    {\n\
+    \"name\": \"Linux\",\n\
+      \"includePath\": [ \"${PROJECT_SOURCE_DIR}/**\", \"${CMAKE_INSTALL_PREFIX}/include\" ],\n\
+      \"defines\": [ \"GDE_EXPORT=\" ],\n\
+      \"compilerPath\": \"${GDE_TOOLCHAIN_COMPILER_CXX_PATH}\",\n\
+      \"compilerArgs\": [ \"-I${PROJECT_SOURCE_DIR}\" ],\n\
+      \"cStandard\": \"c11\",\n\
+      \"cppStandard\": \"c++11\",\n\
+      \"intelliSenseMode\": \"gcc-x64\"\n\
+    }\n\
+  ]\n\
+}")
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+        string(APPEND c_cpp_properties_text "\
+{\n\
+  \"version\": 4,\n\
+  \"configurations\": [\n\
+    {\n\
+      \"name\": \"macOS\",\n\
+      \"includePath\": [ \"${PROJECT_SOURCE_DIR}/**\", \"${CMAKE_INSTALL_PREFIX}/include\" ],\n\
+      \"defines\": [ \"GDE_EXPORT=\" ],\n\
+      \"compilerPath\": \"${GDE_TOOLCHAIN_COMPILER_CXX_PATH}\",\n\
+      \"compilerArgs\": [ \"-I${PROJECT_SOURCE_DIR}\" ],\n\
+      \"cStandard\": \"c11\",\n\
+      \"cppStandard\": \"c++11\",\n\
+      \"intelliSenseMode\": \"clang-x64\",\n\
+      \"macFrameworkPath\": [ \"/System/Library/Frameworks\", \"/Library/Frameworks\" ]\n\
+    }\n\
+  ]\n\
+}")
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+        string(APPEND c_cpp_properties_text "\
+{\n\
+  \"version\": 4,\n\
+  \"configurations\": [\n\
+    {\n\
+      \"name\": \"Win32\",\n\
+      \"includePath\": [ \"${PROJECT_SOURCE_DIR}/**\", \"${CMAKE_INSTALL_PREFIX}/include\" ],\n\
+      \"defines\": [ \"GDE_EXPORT=\" ],\n\
+      \"windowsSdkVersion\": \"10.0.18362.0\",\n\
+      \"compilerPath\": \"${GDE_TOOLCHAIN_COMPILER_CXX_PATH}\",\n\
+      \"compilerArgs\": [ \"-I${PROJECT_SOURCE_DIR}\" ],\n\
+      \"cStandard\": \"c11\",\n\
+      \"cppStandard\": \"c++11\",\n\
+      \"intelliSenseMode\": \"msvc-x64\"\n\
+    }\n\
+  ]\n\
+}")
+    endif()
+    file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_C_CPP_PROPERTIES} ${c_cpp_properties_text})
+endfunction()
 
 
 
@@ -700,6 +774,8 @@ function (gde_project_end)
 
     gde_project_generator_vscode_launch_add_epilog()
     gde_project_generator_vscode_launch_write()
+
+    gde_project_generator_vscode_c_cpp_properties_write()
 
 endfunction()
 
