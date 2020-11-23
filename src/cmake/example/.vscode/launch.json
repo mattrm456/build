@@ -1,11 +1,12 @@
 {
   "version": "0.2.0",
-  "configuration": [
+  "configurations": [
     {
       "name": "attach",
       "type": "cppdbg",
       "request": "attach",
-      "externalConsole": false
+      "processId": "${command:pickRemoteProcess}",
+      "program": ""
     },
     {
       "name": "example.one.a.t",
@@ -16,7 +17,8 @@
       "stopAtEntry": false,
       "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false
+      "externalConsole": false,
+      "MIMode": "lldb"
     },
     {
       "name": "example.one.b.t",
@@ -27,7 +29,8 @@
       "stopAtEntry": false,
       "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false
+      "externalConsole": false,
+      "MIMode": "lldb"
     },
     {
       "name": "example.two.a.t",
@@ -38,7 +41,8 @@
       "stopAtEntry": false,
       "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false
+      "externalConsole": false,
+      "MIMode": "lldb"
     },
     {
       "name": "example.two.b.t",
@@ -49,7 +53,8 @@
       "stopAtEntry": false,
       "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false
+      "externalConsole": false,
+      "MIMode": "lldb"
     }
   ]
 }

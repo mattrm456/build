@@ -131,15 +131,17 @@ endfunction()
 
 function (gde_project_generator_vscode_launch_add_prolog)
     get_property(launch_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+
     string(APPEND launch_text "\
 {\n\
   \"version\": \"0.2.0\",\n\
-  \"configuration\": [\n\
+  \"configurations\": [\n\
     {\n\
       \"name\": \"attach\",\n\
       \"type\": \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE}\",\n\
       \"request\": \"attach\",\n\
-      \"externalConsole\": false\n\
+      \"processId\": \"\${command:pickRemoteProcess}\",\n\
+      \"program\": \"\"\n\
     }")
     set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH ${launch_text})
 endfunction()
@@ -157,8 +159,20 @@ function (gde_project_generator_vscode_launch_add_target target)
       \"stopAtEntry\": false,\n\
       \"cwd\": \"${bin_dir}\",\n\
       \"environment\": [],\n\
-      \"externalConsole\": false\n\
+      \"externalConsole\": false")
+
+if("${GDE_TOOLCHAIN_DEBUGGER_NAME}" STREQUAL "gdb" OR "${GDE_TOOLCHAIN_DEBUGGER_NAME}" STREQUAL "lldb")
+    string(APPEND launch_text ",\n\
+      \"MIMode\": \"${GDE_TOOLCHAIN_DEBUGGER_NAME}\"")
+    if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+        string(APPEND launch_text ",\n\
+            \"miDebuggerPath\": \"${GDE_TOOLCHAIN_DEBUGGER_PATH}\"")
+    endif()
+endif()
+
+    string(APPEND launch_text "\n\
     }")
+
     set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH ${launch_text})
 endfunction()
 
