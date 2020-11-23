@@ -1,16 +1,55 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "example-console",
-        "type": "cppvsdbg",
-        "request": "launch",
-        "program": "C:\\Users\\Administrator\\GDE\\build\\src\\cmake\\example\\tmp\\debug\\bin\\example-console.exe",
-        "args": [],
-        "stopAtEntry": false,
-        "cwd": "${workspaceFolder}",
-        "environment": [],
-        "externalConsole": false
-      }
-    ]
-  }
+  "version": "0.2.0",
+  "configuration": [
+    {
+      "name": "attach",
+      "type": "cppdbg",
+      "request": "attach",
+      "externalConsole": false
+    },
+    {
+      "name": "example.one.a.t",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.one.a.t",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "environment": [],
+      "externalConsole": false
+    },
+    {
+      "name": "example.one.b.t",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.one.b.t",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "environment": [],
+      "externalConsole": false
+    },
+    {
+      "name": "example.two.a.t",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.two.a.t",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "environment": [],
+      "externalConsole": false
+    },
+    {
+      "name": "example.two.b.t",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.two.b.t",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "environment": [],
+      "externalConsole": false
+    }
+  ]
+}
