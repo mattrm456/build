@@ -20,10 +20,10 @@ set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_LAUNCH "${GDE_PROJECT_GENERATOR_VSCOD
 set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_SETTINGS "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/settings.json")
 set(GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_C_CPP_PROPERTIES "${GDE_PROJECT_GENERATOR_VSCODE_DIR}/c_cpp_properties.json")
 
-set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "")
-set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH "")
-set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_SETTINGS "")
-set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES "")
+set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_SETTINGS)
+set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES)
 
 message(STATUS "GDE Build: GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS = ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS}")
 
@@ -38,8 +38,9 @@ else()
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$gcc")
 endif()
 
-macro (gde_project_generator_vscode_tasks_add_prolog)
-    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
+function (gde_project_generator_vscode_tasks_add_prolog)
+    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+    string(APPEND tasks_text "\
 {\n\
   \"version\": \"2.0.0\",\n\
   \"tasks\": [\n\
@@ -60,10 +61,12 @@ macro (gde_project_generator_vscode_tasks_add_prolog)
         \"isDefault\": true\n\
       }\n\
     }")
-endmacro()
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ${tasks_text})
+endfunction()
 
-macro (gde_project_generator_vscode_tasks_add_target target)
-    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ",\n\
+function (gde_project_generator_vscode_tasks_add_target target)
+    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+    string(APPEND tasks_text ",\n\
     {\n\
       \"type\": \"shell\",\n\
       \"label\": \"${target}\",\n\
@@ -82,13 +85,16 @@ macro (gde_project_generator_vscode_tasks_add_target target)
         \"isDefault\": true\n\
       }\n\
     }")
-endmacro()
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ${tasks_text})
+endfunction()
 
-macro (gde_project_generator_vscode_tasks_add_epilog)
-    string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\n\
+function (gde_project_generator_vscode_tasks_add_epilog)
+    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+    string(APPEND tasks_text "\n\
   ]\n\
 }")
-endmacro()
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ${tasks_text})
+endfunction()
 
 # string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
 # {\n\
@@ -116,11 +122,8 @@ endmacro()
 # ")
 
 gde_project_generator_vscode_tasks_add_prolog()
-gde_project_generator_vscode_tasks_add_target("foo")
-gde_project_generator_vscode_tasks_add_target("bar")
-gde_project_generator_vscode_tasks_add_epilog()
-
-file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS})
+# MRM: gde_project_generator_vscode_tasks_add_target("foo")
+# MRM: gde_project_generator_vscode_tasks_add_target("bar")
 
 
 
@@ -347,23 +350,23 @@ function (gde_add_library library)
 
         set(component_test_build_target "${component_impl_build_target}.t")
 
-        message("--")
-        message("source='${source}'")
-        message("header='${header}'")
-        message("schema='${schema}'")
-        message("source_barename='${source_barename}'")
-        message("source_basename='${source_basename}'")
-        message("source_extension='${source_extension}'")
-        message("source_dirname='${source_dirname}'")
-        message("source_testpath='${source_testpath}'")
-        message("source_fullpath='${source_fullpath}'")
-        message("source_projpath='${source_projpath}'")
-        message("source_installdir='${source_installdir}'")
-        message("header_fullpath='${header_fullpath}'")
-        message("schema_fullpath='${schema_fullpath}'")
-        message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
-        message("component_impl_build_target='${component_impl_build_target}'")
-        message("component_test_build_target='${component_test_build_target}'")
+        # message("--")
+        # message("source='${source}'")
+        # message("header='${header}'")
+        # message("schema='${schema}'")
+        # message("source_barename='${source_barename}'")
+        # message("source_basename='${source_basename}'")
+        # message("source_extension='${source_extension}'")
+        # message("source_dirname='${source_dirname}'")
+        # message("source_testpath='${source_testpath}'")
+        # message("source_fullpath='${source_fullpath}'")
+        # message("source_projpath='${source_projpath}'")
+        # message("source_installdir='${source_installdir}'")
+        # message("header_fullpath='${header_fullpath}'")
+        # message("schema_fullpath='${schema_fullpath}'")
+        # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
+        # message("component_impl_build_target='${component_impl_build_target}'")
+        # message("component_test_build_target='${component_test_build_target}'")
 
         if(${GDE_TEST})
             add_executable(
@@ -401,6 +404,9 @@ function (gde_add_library library)
             )
 
             set_tests_properties(${component_test_build_target} PROPERTIES TIMEOUT 60)
+
+            message(STATUS "Adding VS Code task: ${component_test_build_target}")
+            gde_project_generator_vscode_tasks_add_target(${component_test_build_target})
         endif()
 
         if (EXISTS ${header_fullpath})
@@ -641,6 +647,12 @@ function (gde_project_end)
     #set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
     #set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
     #    "${CMAKE_CURRENT_SOURCE_DIR}/debian/postinst")
+
+
+    gde_project_generator_vscode_tasks_add_epilog()
+
+    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+    file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${tasks_text})
 
 endfunction()
 
