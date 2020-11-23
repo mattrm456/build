@@ -29,13 +29,16 @@ message(STATUS "GDE Build: GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS = ${GDE_
 
 file(MAKE_DIRECTORY ${GDE_PROJECT_GENERATOR_VSCODE_DIR})
 
-
-
-
 if("${GDE_TOOLCHAIN_COMPILER_CXX_NAME}" STREQUAL "cl")
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$msCompile")
 else()
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER "\$gcc")
+endif()
+
+if("${GDE_TOOLCHAIN_COMPILER_CXX_NAME}" STREQUAL "cl")
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE "cppvsdbg")
+else()
+    set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE "cppdbg")
 endif()
 
 function (gde_project_generator_vscode_tasks_add_prolog)
@@ -49,11 +52,11 @@ function (gde_project_generator_vscode_tasks_add_prolog)
       \"label\": \"all\",\n\
       \"command\": \"${CMAKE_COMMAND}\",\n\
       \"args\": [\n\
-          \"--build\",\n\
-          \"${CMAKE_BINARY_DIR}\",\n\
-          \"--parallel\",\n\
-          \"8\",\n\
-          \"--target\"\n\
+        \"--build\",\n\
+        \"${CMAKE_BINARY_DIR}\",\n\
+        \"--parallel\",\n\
+        \"8\",\n\
+        \"--target\"\n\
       ],\n\
       \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
       \"group\": {\n\
@@ -72,12 +75,12 @@ function (gde_project_generator_vscode_tasks_add_target target)
       \"label\": \"${target}\",\n\
       \"command\": \"${CMAKE_COMMAND}\",\n\
       \"args\": [\n\
-          \"--build\",\n\
-          \"${CMAKE_BINARY_DIR}\",\n\
-          \"--parallel\",\n\
-          \"8\",\n\
-          \"--target\",\n\
-          \"${target}\"\n\
+        \"--build\",\n\
+        \"${CMAKE_BINARY_DIR}\",\n\
+        \"--parallel\",\n\
+        \"8\",\n\
+        \"--target\",\n\
+        \"${target}\"\n\
       ],\n\
       \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
       \"group\": {\n\
@@ -96,34 +99,75 @@ function (gde_project_generator_vscode_tasks_add_epilog)
     set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS ${tasks_text})
 endfunction()
 
-# string(APPEND GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS "\
-# {\n\
-#   \"version\": \"2.0.0\",\n\
-#   \"tasks\": [\n\
-#     {\n\
-#       \"type\": \"shell\",\n\
-#       \"label\": \"all\",\n\
-#       \"command\": \"${CMAKE_COMMAND}\",\n\
-#       \"args\": [\n\
-#           \"--build\",\n\
-#           \"${CMAKE_BINARY_DIR}\",\n\
-#           \"--parallel\",\n\
-#           \"8\",\n\
-#           \"--target\"\n\
-#       ],\n\
-#       \"problemMatcher\": [ \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS_PROBLEM_MATCHER}\" ],\n\
-#       \"group\": {\n\
-#         \"kind\": \"build\",\n\
-#         \"isDefault\": true\n\
-#       }\n\
-#     }\n\
-#   ]\n\
-# }\n\
-# ")
+function (gde_project_generator_vscode_tasks_write)
+    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
+    file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${tasks_text})
+endfunction()
 
-gde_project_generator_vscode_tasks_add_prolog()
-# MRM: gde_project_generator_vscode_tasks_add_target("foo")
-# MRM: gde_project_generator_vscode_tasks_add_target("bar")
+
+
+
+
+
+
+
+
+
+function (gde_project_generator_vscode_launch_add_prolog)
+    get_property(launch_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+    string(APPEND launch_text "\
+{\n\
+  \"version\": \"0.2.0\",\n\
+  \"configuration\": [\n\
+    {\n\
+      \"name\": \"attach\",\n\
+      \"type\": \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE}\",\n\
+      \"request\": \"attach\",\n\
+      \"externalConsole\": false\n\
+    }")
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH ${launch_text})
+endfunction()
+
+function (gde_project_generator_vscode_launch_add_target target)
+    get_property(launch_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+    get_filename_component(bin_dir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ABSOLUTE)
+    string(APPEND launch_text ",\n\
+    {\n\
+      \"name\": \"${target}\",\n\
+      \"type\": \"${GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH_TYPE}\",\n\
+      \"request\": \"launch\",\n\
+      \"program\": \"${bin_dir}/${target}${CMAKE_EXECUTABLE_SUFFIX}\",\n\
+      \"args\": [],\n\
+      \"stopAtEntry\": false,\n\
+      \"cwd\": \"${bin_dir}\",\n\
+      \"environment\": [],\n\
+      \"externalConsole\": false\n\
+    }")
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH ${launch_text})
+endfunction()
+
+function (gde_project_generator_vscode_launch_add_epilog)
+    get_property(launch_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+    string(APPEND launch_text "\n\
+  ]\n\
+}")
+    set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH ${launch_text})
+endfunction()
+
+function (gde_project_generator_vscode_launch_write)
+    get_property(launch_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
+    file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_LAUNCH} ${launch_text})
+endfunction()
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -405,8 +449,8 @@ function (gde_add_library library)
 
             set_tests_properties(${component_test_build_target} PROPERTIES TIMEOUT 60)
 
-            message(STATUS "Adding VS Code task: ${component_test_build_target}")
             gde_project_generator_vscode_tasks_add_target(${component_test_build_target})
+            gde_project_generator_vscode_launch_add_target(${component_test_build_target})
         endif()
 
         if (EXISTS ${header_fullpath})
@@ -551,6 +595,9 @@ function (gde_project)
 
     set(CPACK_SOURCE_INSTALLED_DIRECTORIES "${CMAKE_SOURCE_DIR}/..;/" PARENT_SCOPE)
 
+    gde_project_generator_vscode_tasks_add_prolog()
+    gde_project_generator_vscode_launch_add_prolog()
+
 endfunction()
 
 
@@ -648,11 +695,11 @@ function (gde_project_end)
     #set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
     #    "${CMAKE_CURRENT_SOURCE_DIR}/debian/postinst")
 
-
     gde_project_generator_vscode_tasks_add_epilog()
+    gde_project_generator_vscode_tasks_write()
 
-    get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
-    file(WRITE ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS} ${tasks_text})
+    gde_project_generator_vscode_launch_add_epilog()
+    gde_project_generator_vscode_launch_write()
 
 endfunction()
 
