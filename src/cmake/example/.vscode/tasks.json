@@ -89,6 +89,24 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "type": "shell",
+      "label": "example-console.version.t",
+      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "args": [
+        "--build",
+        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "--parallel",
+        "8",
+        "--target",
+        "example-console.version.t"
+      ],
+      "problemMatcher": [ "$gcc" ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }

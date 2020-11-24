@@ -55,6 +55,18 @@
       "environment": [],
       "externalConsole": false,
       "MIMode": "lldb"
+    },
+    {
+      "name": "example-console.version.t",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example-console.version.t",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb"
     }
   ]
 }

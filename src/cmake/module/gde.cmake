@@ -302,18 +302,18 @@ endfunction()
 function (gde_add_library_group library_group)
     set(library_index 0)
     foreach(library ${ARGN})
-        set(object_library "${library}.objects")
+        set(library_objects "${library}.objects")
         if(NOT(${library_index}))
             add_library(
                 ${library_group}
                 STATIC
-                $<TARGET_OBJECTS:${object_library}>
+                $<TARGET_OBJECTS:${library_objects}>
             )
         else()
             target_sources(
                 ${library_group}
                 PRIVATE
-                $<TARGET_OBJECTS:${object_library}>
+                $<TARGET_OBJECTS:${library_objects}>
             )
         endif()
         set(library_index 1)
@@ -350,23 +350,30 @@ function (gde_add_library_group library_group)
 
 endfunction()
 
-# Add to the specified 'library' the library dependencies specified
-# subsequently in 'ARGN'.
-function (gde_add_library_dependency library)
-    target_link_libraries(${library} PUBLIC ${ARGN})
 
-    set(object_library "${library}.objects")
-    target_link_libraries(${object_library} PUBLIC ${ARGN})
+# Add to the specified 'uor' and its associated object library the library
+# dependencies specified subsequently in 'ARGN'.
+function (gde_add_uor_dependency uor)
+    target_link_libraries(${uor} PUBLIC ${ARGN})
+
+    set(uor_objects "${uor}.objects")
+    target_link_libraries(${uor_objects} PUBLIC ${ARGN})
+endfunction()
+
+# Add to the specified 'library' and its associated object library the library
+# dependencies specified subsequently in 'ARGN'.
+function (gde_add_library_dependency library)
+    gde_add_uor_dependency(${library} ${ARGN})
 endfunction()
 
 # Add the specified 'library' and associated object library from the sources
 # specified subsequently as 'ARGN'.
 function (gde_add_library library)
 
-    set(object_library "${library}.objects")
+    set(library_objects "${library}.objects")
 
     add_library(
-        ${object_library}
+        ${library_objects}
         OBJECT
         ${ARGN}
     )
@@ -374,7 +381,7 @@ function (gde_add_library library)
     add_library(
         ${library}
         STATIC
-        $<TARGET_OBJECTS:${object_library}>
+        $<TARGET_OBJECTS:${library_objects}>
     )
 
     set_target_properties(
@@ -391,7 +398,7 @@ function (gde_add_library library)
     )
 
     target_include_directories(
-        ${object_library}
+        ${library_objects}
         PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
@@ -407,7 +414,7 @@ function (gde_add_library library)
             /usr/X11R6/include)
 
         target_include_directories(
-            ${object_library}
+            ${library_objects}
             SYSTEM PRIVATE
             /usr/X11R6/include)
 
@@ -417,7 +424,7 @@ function (gde_add_library library)
             /usr/X11R6/lib)
 
         target_link_directories(
-            ${object_library}
+            ${library_objects}
             PUBLIC
             /usr/X11R6/lib)
 
@@ -431,7 +438,7 @@ function (gde_add_library library)
             /opt/local/include)
 
         target_include_directories(
-            ${object_library}
+            ${library_objects}
             SYSTEM PUBLIC
             /opt/local/include)
 
@@ -441,7 +448,7 @@ function (gde_add_library library)
             /opt/local/lib)
 
         target_link_directories(
-            ${object_library}
+            ${library_objects}
             PUBLIC
             /opt/local/lib)
 
@@ -500,7 +507,9 @@ function (gde_add_library library)
         # message("component_impl_build_target='${component_impl_build_target}'")
         # message("component_test_build_target='${component_test_build_target}'")
 
-        if(${GDE_TEST})
+        gde_fullpath(source_testfullpath ${source_testpath})
+
+        if(${GDE_TEST} AND EXISTS ${source_testfullpath})
             add_executable(
                 ${component_test_build_target}
                 EXCLUDE_FROM_ALL
@@ -509,7 +518,7 @@ function (gde_add_library library)
 
             add_dependencies(
                 ${component_test_build_target}
-                ${library}
+                ${library_objects}
             )
 
             add_dependencies(
@@ -527,7 +536,7 @@ function (gde_add_library library)
             target_link_libraries(
                 ${component_test_build_target}
                 PUBLIC
-                ${library}
+                ${library_objects}
             )
 
             add_test(
@@ -633,6 +642,260 @@ function (gde_add_library library)
     # ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
 
 endfunction()
+
+
+
+
+
+
+
+# Add to the specified 'executable' and its associated object library the executable
+# dependencies specified subsequently in 'ARGN'.
+function (gde_add_executable_dependency executable)
+    gde_add_uor_dependency(${executable} ${ARGN})
+endfunction()
+
+# Add the specified 'executable' and associated object library from the sources
+# specified subsequently as 'ARGN'.
+function (gde_add_executable executable)
+
+    set(executable_objects "${executable}.objects")
+
+    set(executable_source_list ${ARGN})
+    set(executable_source_list_minus_main ${executable_source_list})
+
+    foreach(source ${executable_source_list_minus_main})
+        gde_basename(source_basename ${source})
+        message(STATUS "Executable source basename: ${source_basename}")
+        if(${source_basename} STREQUAL "main.cpp")
+            set(main_source ${source})
+            list(REMOVE_ITEM executable_source_list_minus_main ${source})
+            break()
+        endif()
+    endforeach()
+
+    if (NOT DEFINED main_source)
+        message(FATAL_ERROR "Executable '${executable}' must contain a component whose basename is 'main.cpp' [${main_source}]")
+    endif()
+
+    message(STATUS "Source list minus main: ${executable_source_list_minus_main}")
+
+    add_library(
+        ${executable_objects}
+        OBJECT
+        ${executable_source_list_minus_main}
+    )
+
+    add_executable(
+        ${executable}
+        $<TARGET_OBJECTS:${executable_objects}>
+        ${main_source}
+    )
+
+    set_target_properties(
+        ${executable} PROPERTIES VERSION ${PROJECT_VERSION})
+
+    set_target_properties(
+        ${executable} PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
+    target_include_directories(
+        ${executable}
+        PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+    )
+
+    target_include_directories(
+        ${executable_objects}
+        PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+    )
+
+    if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")
+
+        target_include_directories(
+            ${executable}
+            SYSTEM PRIVATE
+            /usr/X11R6/include)
+
+        target_include_directories(
+            ${executable_objects}
+            SYSTEM PRIVATE
+            /usr/X11R6/include)
+
+        target_link_directories(
+            ${executable}
+            PUBLIC
+            /usr/X11R6/lib)
+
+        target_link_directories(
+            ${executable_objects}
+            PUBLIC
+            /usr/X11R6/lib)
+
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+
+        target_include_directories(
+            ${executable}
+            SYSTEM PUBLIC
+            /opt/local/include)
+
+        target_include_directories(
+            ${executable_objects}
+            SYSTEM PUBLIC
+            /opt/local/include)
+
+        target_link_directories(
+            ${executable}
+            PUBLIC
+            /opt/local/lib)
+
+        target_link_directories(
+            ${executable_objects}
+            PUBLIC
+            /opt/local/lib)
+
+    elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "SunOS")
+
+    endif()
+
+    foreach(source ${executable_source_list_minus_main})
+        gde_dirname(source_dirname ${source})
+        gde_basename(source_basename ${source})
+        gde_barename(source_barename ${source})
+        gde_extension(source_extension ${source})
+
+        if("${source_dirname}" STREQUAL "")
+            set(source_testpath "${source_barename}.t${source_extension}")
+            set(header "${source_barename}.h")
+            set(schema "${source_barename}.uidl")
+        else()
+            set(source_testpath
+                "${source_dirname}/${source_barename}.t${source_extension}")
+            set(header "${source_dirname}/${source_barename}.h")
+            set(schema "${source_dirname}/${source_barename}.uidl")
+        endif()
+
+        gde_fullpath(source_fullpath ${source})
+
+        STRING(REGEX REPLACE "^${PROJECT_SOURCE_DIR}/" "" source_projpath ${source_fullpath})
+        gde_dirname(source_installdir ${source_projpath})
+
+        gde_dirname(source_fullpath_dirname ${source_fullpath})
+        set(header_fullpath
+            "${source_fullpath_dirname}/${source_barename}.h")
+        set(schema_fullpath
+            "${source_fullpath_dirname}/${source_barename}.uidl")
+
+        STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
+        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
+
+        set(component_test_build_target "${component_impl_build_target}.t")
+
+        # message("--")
+        # message("source='${source}'")
+        # message("header='${header}'")
+        # message("schema='${schema}'")
+        # message("source_barename='${source_barename}'")
+        # message("source_basename='${source_basename}'")
+        # message("source_extension='${source_extension}'")
+        # message("source_dirname='${source_dirname}'")
+        # message("source_testpath='${source_testpath}'")
+        # message("source_fullpath='${source_fullpath}'")
+        # message("source_projpath='${source_projpath}'")
+        # message("source_installdir='${source_installdir}'")
+        # message("header_fullpath='${header_fullpath}'")
+        # message("schema_fullpath='${schema_fullpath}'")
+        # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
+        # message("component_impl_build_target='${component_impl_build_target}'")
+        # message("component_test_build_target='${component_test_build_target}'")
+
+        gde_fullpath(source_testfullpath ${source_testpath})
+
+        if(${GDE_TEST} AND EXISTS ${source_testfullpath})
+            add_executable(
+                ${component_test_build_target}
+                EXCLUDE_FROM_ALL
+                ${source_testpath}
+            )
+
+            add_dependencies(
+                ${component_test_build_target}
+                ${executable_objects}
+            )
+
+            add_dependencies(
+                build_test
+                ${component_test_build_target}
+            )
+
+            target_include_directories(
+                ${component_test_build_target}
+                PUBLIC
+                $<INSTALL_INTERFACE:include>
+                $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+            )
+
+            target_link_libraries(
+                ${component_test_build_target}
+                PUBLIC
+                ${executable_objects}
+            )
+
+            add_test(
+                NAME ${component_test_build_target}
+                COMMAND ${component_test_build_target}
+            )
+
+            set_tests_properties(${component_test_build_target} PROPERTIES TIMEOUT 60)
+
+            gde_project_generator_vscode_tasks_add_target(${component_test_build_target})
+            gde_project_generator_vscode_launch_add_target(${component_test_build_target})
+        endif()
+
+    endforeach()
+
+    # Install the executable to ${CMAKE_INSTALL_PREFIX}/bin.
+
+    install(
+        TARGETS
+            ${executable}
+        EXPORT
+            ${CMAKE_PROJECT_NAME}-targets
+        RUNTIME
+            DESTINATION
+                bin
+            COMPONENT
+                runtime
+    )
+
+endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Register the current project as a GDE-style repository layout. This
 # function should be called in the top-level CMakeLists.txt file *after*
