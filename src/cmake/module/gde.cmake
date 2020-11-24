@@ -771,7 +771,7 @@ function (gde_project_end)
     endif()
 
     set(CPACK_SOURCE_IGNORE_FILES
-        ".git" ".gitignore .vscode "
+        ".git" ".gitignore .vscode .config .gde"
         "bin" "build" "cmake" "include" "lib" "obj" "pkg" "tmp"
         PARENT_SCOPE)
 
