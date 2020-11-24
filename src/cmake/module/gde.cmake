@@ -3,14 +3,15 @@
 # Copyright (c) 2002-2019
 ###############################################################################
 
-message(STATUS "GDE Build version 1.0.0")
+# message(STATUS "GDE Build version 1.0.0")
+
 set(GDE_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}")
-message(STATUS "GDE Build: GDE_MODULE_DIR = ${GDE_MODULE_DIR}")
+# message(STATUS "GDE Build: GDE_MODULE_DIR = ${GDE_MODULE_DIR}")
 
 # Getting the real path is only available in CMake >= 3.19
 # file(REAL_PATH ${PROJECT_SOURCE_DIR}/.. GDE_PROJECT_ROOT_DIR)
 set(GDE_PROJECT_ROOT_DIR "${PROJECT_SOURCE_DIR}/..")
-message(STATUS "GDE Build: GDE_PROJECT_ROOT_DIR = ${GDE_PROJECT_ROOT_DIR}")
+# message(STATUS "GDE Build: GDE_PROJECT_ROOT_DIR = ${GDE_PROJECT_ROOT_DIR}")
 
 # MRM: Change to be a subdirectory from the project root dir
 set(GDE_PROJECT_GENERATOR_VSCODE_DIR "${GDE_PROJECT_ROOT_DIR}/.vscode")
@@ -24,8 +25,6 @@ set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
 set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_LAUNCH)
 set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_SETTINGS)
 set_property(GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES)
-
-message(STATUS "GDE Build: GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS = ${GDE_PROJECT_GENERATOR_VSCODE_FILE_PATH_TASKS}")
 
 file(MAKE_DIRECTORY ${GDE_PROJECT_GENERATOR_VSCODE_DIR})
 
@@ -56,6 +55,7 @@ else()
     set(GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_C_CPP_PROPERTIES_INTELLISENSE_MODE "")
 endif()
 
+set(GDE_VERBOSE ${CMAKE_VERBOSE_MAKEFILE})
 
 function (gde_project_generator_vscode_tasks_add_prolog)
     get_property(tasks_text GLOBAL PROPERTY GDE_PROJECT_GENERATOR_VSCODE_FILE_TEXT_TASKS)
@@ -666,7 +666,7 @@ function (gde_add_executable executable)
 
     foreach(source ${executable_source_list_minus_main})
         gde_basename(source_basename ${source})
-        message(STATUS "Executable source basename: ${source_basename}")
+        #message(STATUS "Executable source basename: ${source_basename}")
         if(${source_basename} STREQUAL "main.cpp")
             set(main_source ${source})
             list(REMOVE_ITEM executable_source_list_minus_main ${source})
@@ -678,7 +678,7 @@ function (gde_add_executable executable)
         message(FATAL_ERROR "Executable '${executable}' must contain a component whose basename is 'main.cpp' [${main_source}]")
     endif()
 
-    message(STATUS "Source list minus main: ${executable_source_list_minus_main}")
+    #message(STATUS "Source list minus main: ${executable_source_list_minus_main}")
 
     add_library(
         ${executable_objects}
