@@ -484,11 +484,6 @@ function (gde_add_library library)
         set(schema_fullpath
             "${source_fullpath_dirname}/${source_barename}.uidl")
 
-        STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
-        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
-
-        set(component_test_build_target "${component_impl_build_target}.t")
-
         # message("--")
         # message("source='${source}'")
         # message("header='${header}'")
@@ -504,6 +499,17 @@ function (gde_add_library library)
         # message("header_fullpath='${header_fullpath}'")
         # message("schema_fullpath='${schema_fullpath}'")
         # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
+
+        STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
+		
+		if ("${source_extension}" STREQUAL "")
+			message(FATAL_ERROR "Source extension is empty")
+		endif()
+		
+        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
+
+        set(component_test_build_target "${component_impl_build_target}.t")
+
         # message("component_impl_build_target='${component_impl_build_target}'")
         # message("component_test_build_target='${component_test_build_target}'")
 

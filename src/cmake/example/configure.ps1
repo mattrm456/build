@@ -160,6 +160,8 @@ if (-not $?) {
     exit 1
 }
 
+Write-Output "$CONFIGURE_CMAKE: OK"
+
 Set-Location -Path $CONFIGURE_REPOSITORY
 
 $MAKEFILE_TEXT = @"

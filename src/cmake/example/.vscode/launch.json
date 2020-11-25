@@ -3,70 +3,65 @@
   "configurations": [
     {
       "name": "attach",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "attach",
       "processId": "${command:pickRemoteProcess}",
       "program": ""
     },
     {
       "name": "example.one.a.t",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "launch",
-      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.one.a.t",
+      "program": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin/example.one.a.t.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "cwd": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "externalConsole": false
     },
     {
       "name": "example.one.b.t",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "launch",
-      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.one.b.t",
+      "program": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin/example.one.b.t.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "cwd": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "externalConsole": false
     },
     {
       "name": "example.two.a.t",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "launch",
-      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.two.a.t",
+      "program": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin/example.two.a.t.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "cwd": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "externalConsole": false
     },
     {
       "name": "example.two.b.t",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "launch",
-      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example.two.b.t",
+      "program": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin/example.two.b.t.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "cwd": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "externalConsole": false
     },
     {
       "name": "example-console.version.t",
-      "type": "cppdbg",
+      "type": "cppvsdbg",
       "request": "launch",
-      "program": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin/example-console.version.t",
+      "program": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin/example-console.version.t.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/Users/mmillett/development/build/src/cmake/example/tmp/debug/bin",
+      "cwd": "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/bin",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "externalConsole": false
     }
   ]
 }

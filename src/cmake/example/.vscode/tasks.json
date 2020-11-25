@@ -4,15 +4,15 @@
     {
       "type": "shell",
       "label": "all",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -21,16 +21,16 @@
     {
       "type": "shell",
       "label": "example.one.a.t",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target",
         "example.one.a.t"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -39,16 +39,16 @@
     {
       "type": "shell",
       "label": "example.one.b.t",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target",
         "example.one.b.t"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -57,16 +57,16 @@
     {
       "type": "shell",
       "label": "example.two.a.t",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target",
         "example.two.a.t"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -75,16 +75,16 @@
     {
       "type": "shell",
       "label": "example.two.b.t",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target",
         "example.two.b.t"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -93,16 +93,16 @@
     {
       "type": "shell",
       "label": "example-console.version.t",
-      "command": "/usr/local/Cellar/cmake/3.15.3/bin/cmake",
+      "command": "C:/Tools/MSVC/Build/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
       "args": [
         "--build",
-        "/Users/mmillett/development/build/src/cmake/example/tmp/debug/obj",
+        "C:/Users/Administrator/GDE/build/src/cmake/example/tmp/debug/obj",
         "--parallel",
         "8",
         "--target",
         "example-console.version.t"
       ],
-      "problemMatcher": [ "$gcc" ],
+      "problemMatcher": [ "$msCompile" ],
       "group": {
         "kind": "build",
         "isDefault": true
