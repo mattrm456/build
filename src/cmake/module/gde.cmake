@@ -501,17 +501,23 @@ function (gde_add_library library)
         # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
 
         STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
+	
+        #message("component_impl_build_target [before replacing extension]='${component_impl_build_target}'")
+
+        #if ("${source_extension}" STREQUAL "")
+        #	message(FATAL_ERROR "Source extension is empty")
+        #endif()
 		
-		if ("${source_extension}" STREQUAL "")
-			message(FATAL_ERROR "Source extension is empty")
-		endif()
-		
-        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
+        STRING(REGEX REPLACE "${source_extension}$" "" component_impl_build_target ${component_impl_build_target})
 
         set(component_test_build_target "${component_impl_build_target}.t")
 
-        # message("component_impl_build_target='${component_impl_build_target}'")
-        # message("component_test_build_target='${component_test_build_target}'")
+        #message("component_impl_build_target='${component_impl_build_target}'")
+        #message("component_test_build_target='${component_test_build_target}'")
+        
+        #if ("${component_test_build_target}" STREQUAL "infrastrture.surity.mbedtls.thirdparty.mbedtls.error.t")
+        #    message(FATAL_ERROR "Invalid build target")
+        #endif()
 
         gde_fullpath(source_testfullpath ${source_testpath})
 
@@ -799,7 +805,7 @@ function (gde_add_executable executable)
             "${source_fullpath_dirname}/${source_barename}.uidl")
 
         STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
-        STRING(REGEX REPLACE "${source_extension}" "" component_impl_build_target ${component_impl_build_target})
+        STRING(REGEX REPLACE "${source_extension}$" "" component_impl_build_target ${component_impl_build_target})
 
         set(component_test_build_target "${component_impl_build_target}.t")
 
