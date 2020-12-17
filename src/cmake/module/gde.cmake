@@ -406,6 +406,26 @@ function (gde_add_library library)
 
     if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
 
+        target_include_directories(
+            ${library}
+            SYSTEM PUBLIC
+            /usr/local/include)
+
+        target_include_directories(
+            ${library_objects}
+            SYSTEM PUBLIC
+            /usr/local/include)
+
+        target_link_directories(
+            ${library}
+            PUBLIC
+            /usr/local/lib)
+
+        target_link_directories(
+            ${library_objects}
+            PUBLIC
+            /usr/local/lib)
+
     elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")
 
         target_include_directories(
@@ -501,20 +521,20 @@ function (gde_add_library library)
         # message("proj_sourcedir='${PROJECT_SOURCE_DIR}'")
 
         STRING(REGEX REPLACE "[/\\]" "." component_impl_build_target ${source_projpath})
-	
+
         #message("component_impl_build_target [before replacing extension]='${component_impl_build_target}'")
 
         #if ("${source_extension}" STREQUAL "")
         #	message(FATAL_ERROR "Source extension is empty")
         #endif()
-		
+
         STRING(REGEX REPLACE "${source_extension}$" "" component_impl_build_target ${component_impl_build_target})
 
         set(component_test_build_target "${component_impl_build_target}.t")
 
         #message("component_impl_build_target='${component_impl_build_target}'")
         #message("component_test_build_target='${component_test_build_target}'")
-        
+
         #if ("${component_test_build_target}" STREQUAL "infrastrture.surity.mbedtls.thirdparty.mbedtls.error.t")
         #    message(FATAL_ERROR "Invalid build target")
         #endif()
